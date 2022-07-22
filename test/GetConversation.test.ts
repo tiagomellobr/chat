@@ -16,9 +16,9 @@ test("Must get a conversation", async () => {
     const getConversation = new GetConversation(conversationRepository);
     const conversation = await getConversation.execute("9999");
 
-    expect(conversations[0]).toEqual({members:["1234", "5678"]});
-    expect(conversations[1]).toEqual({members:["5678", "9999"]});
+    expect(conversations[0].members).toEqual(["1234", "5678"]);
+    expect(conversations[1].members).toEqual(["5678", "9999"]);
 
-    expect(conversation).toEqual([{members:["5678", "9999"]}]);
+    expect(conversation[0].members).toEqual(["5678", "9999"]);
     
 });

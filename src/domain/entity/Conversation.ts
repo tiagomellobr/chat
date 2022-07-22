@@ -1,3 +1,3 @@
 export default class Conversation {
-    constructor(readonly members: Array<any>){}
+    constructor(readonly id: string, readonly members: Array<any>){}
 }
