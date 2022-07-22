@@ -1,12 +1,15 @@
 import CreateConversation from "../../application/CreateConversation";
+import CreateMessage from "../../application/CreateMessage";
 import GetAllConversation from "../../application/GetAllConversation";
 import GetConversation from "../../application/GetConversation";
+import GetMessage from "../../application/GetMessage";
 import ConversationRepository from "../../domain/repository/ConversationRepository";
+import MessageRepository from "../../domain/repository/MessageRepository";
 import HttpServer from "./HttpServer";
 
 
 export default class Router {
-    constructor(readonly httpServer: HttpServer, readonly conversationRepository: ConversationRepository) {}
+    constructor(readonly httpServer: HttpServer, readonly conversationRepository: ConversationRepository, readonly messageRepository: MessageRepository) {}
 
     async init () {
         
@@ -38,6 +41,25 @@ export default class Router {
         this.httpServer.on("post", "/", async (params: any, body: any) => {
             const createConversation = new CreateConversation(this.conversationRepository);
             const output = await createConversation.execute(body);
+            return { output, statusCode: 200 };
+        });
+
+        this.httpServer.on("get", "/message/:conversationId", async (params: any, body: any) => {
+            const getMessage = new GetMessage(this.messageRepository);
+            const messages = await getMessage.execute(params.conversationId);
+            const output = messages;
+            
+            let statusCode = 200;
+            if(messages.length === 0) {
+                statusCode = 204
+            }
+            
+            return { output, statusCode };
+        });
+
+        this.httpServer.on("post", "/message", async (params: any, body: any) => {
+            const createmessage = new CreateMessage(this.messageRepository);
+            const output = await createmessage.execute(body);
             return { output, statusCode: 200 };
         });
     }
