@@ -5,7 +5,7 @@ export default class CreateMessage {
     constructor(readonly messageRepository: MessageRepository){}
 
     async execute(input: Input): Promise<Message> {
-        const message = new Message(input.conversationId, input.senderId, input.text);
+        const message = new Message(input.conversationId, input.senderId, input.text, new Date());
         await this.messageRepository.save(message);
         return message;
     }
