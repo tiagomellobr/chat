@@ -21,4 +21,9 @@ export default class ConversationMemoryRepository implements ConversationReposit
         return this.conversations;
     }
 
+    async find(users: Array<string>) {
+        const conversations = this.conversations.filter((c) => c.members.includes(users[0]) && c.members.includes(users[1]));
+        return conversations;
+    }
+
 }
